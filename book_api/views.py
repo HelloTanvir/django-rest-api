@@ -10,3 +10,11 @@ from book_api.serializer import BookSerializer
 def book_list(request):
     books = BookSerializer(Book.objects.all(), many=True)
     return Response(books.data)
+
+@api_view(["POST"])
+def book_create(request):
+    book = BookSerializer(data=request.data)
+    if book.is_valid():
+        book.save()
+        return Response(book.data)
+    return Response(book.errors)
